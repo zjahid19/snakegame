@@ -1,10 +1,13 @@
 from turtle import Turtle
+import os
 
 class Scoreboard(Turtle):
     def __init__(self):
         super().__init__()
+        self.read_file = open('score.txt', mode='r')
         self.score = -50
-        self.high_score = 0
+        self.high_score = self.read_file.read()
+        self.read_file.close()
         self.color("white")
         self.hideturtle()
         self.penup()
@@ -25,11 +28,16 @@ class Scoreboard(Turtle):
 
 
     def game_over(self):
-        if self.score > self.high_score:
-            self.high_score = self.score
+        if self.score > int(self.high_score):
+            self.write_file = open('score.txt', mode='w')
+            self.high_score = self.write_file.write(str(self.score))
+            self.write_file.close()
             self.goto(x=-30, y=230)
             self.clear()
-            self.write(f"Score : {self.score} HighScore : {self.high_score} ", "center", font=("calibri", 10, "normal"))
+            self.write(f"Score : {self.score} HighScore : {self.score} ", "center", font=("calibri", 10, "normal"))
+            self.goto(-10, 0)
+            self.write(f"GAME OVER", "center", font=("calibri", 10, "normal"))
+        else:
             self.goto(-10, 0)
             self.write(f"GAME OVER", "center", font=("calibri", 10, "normal"))
 
